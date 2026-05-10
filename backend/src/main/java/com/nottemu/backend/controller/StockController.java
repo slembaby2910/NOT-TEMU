@@ -3,16 +3,16 @@ package com.nottemu.backend.controller;
 import com.nottemu.backend.dto.StockCheckRequest;
 import com.nottemu.backend.dto.StockUpdateRequest;
 import com.nottemu.backend.model.Product;
-import com.nottemu.backend.service.ProductService;
+import com.nottemu.backend.service.CatalogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/inventory")
 @RequiredArgsConstructor
-public class InventoryController {
+public class StockController {
 
-    private final ProductService productService;
+    private final CatalogService productService;
 
     @GetMapping("/{productId}")
     public Integer getStock(@PathVariable Long productId) {

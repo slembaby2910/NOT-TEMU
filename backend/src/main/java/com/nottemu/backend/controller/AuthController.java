@@ -3,7 +3,7 @@ package com.nottemu.backend.controller;
 import com.nottemu.backend.dto.LoginRequest;
 import com.nottemu.backend.dto.RegisterRequest;
 import com.nottemu.backend.model.User;
-import com.nottemu.backend.service.AuthService;
+import com.nottemu.backend.service.UserAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
+    private final UserAuthService authService;
 
     @PostMapping("/register")
     public User register(@RequestBody RegisterRequest request) {
