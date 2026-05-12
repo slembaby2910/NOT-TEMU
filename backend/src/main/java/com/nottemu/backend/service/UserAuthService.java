@@ -2,6 +2,9 @@ package com.nottemu.backend.service;
 
 import com.nottemu.backend.dto.LoginRequest;
 import com.nottemu.backend.dto.RegisterRequest;
+import com.nottemu.backend.exception.BadRequestException;
+import com.nottemu.backend.exception.ResourceNotFoundException;
+import com.nottemu.backend.exception.UnauthorizedException;
 import com.nottemu.backend.model.User;
 import com.nottemu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,10 @@ public class UserAuthService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User register(RegisterRequest request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new BadRequestException("Email already registered");
+        }
+
         User user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
@@ -29,10 +36,10 @@ public class UserAuthService {
 
     public User login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+                .orElseThrow(() -> new UnauthorizedException("Invalid email or password"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new RuntimeException("Invalid email or password");
+            throw new UnauthorizedException("Invalid email or password");
         }
 
         return user;
@@ -40,6 +47,6 @@ public class UserAuthService {
 
     public User getMe(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 }

@@ -1,5 +1,6 @@
 package com.nottemu.backend.service;
 
+import com.nottemu.backend.exception.ResourceNotFoundException;
 import com.nottemu.backend.model.Product;
 import com.nottemu.backend.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class CatalogService {
 
     public Product getById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
     public Product update(Long id, Product updatedProduct) {
@@ -39,6 +40,7 @@ public class CatalogService {
     }
 
     public void delete(Long id) {
-        productRepository.deleteById(id);
+        Product product = getById(id);
+        productRepository.delete(product);
     }
 }
