@@ -3,7 +3,7 @@ const url = "http://localhost:8081"
 
 
 
-/* for transfering the input from UI to json */
+/* sends register request to the backend and returns the created user */
 export async function registerUser(name: string, email: string, password: string) {
     const res = await fetch(`${url}/auth/register`, {
         method: "POST",
@@ -14,7 +14,7 @@ export async function registerUser(name: string, email: string, password: string
     return res.json();
 }
 
-/* for transfering the input from the login to json, and then stored in the database */
+/* sends login request to the backend and returns the authenticated user */
 export async function loginUser(email: string, password: string) {
     const res = await fetch(`${url}/auth/login`, {
         method: "POST",
@@ -32,7 +32,7 @@ export async function fetchProducts() {
     return res.json();
 }
 
-/* gathering data from the cart */
+/* sends the cart items to the backend to create an order */
 export async function checkout(userId: number, items: { productId: number; quantity: number }[]) {
     const res = await fetch(`${url}/orders/checkout`, {
         method: "POST",
