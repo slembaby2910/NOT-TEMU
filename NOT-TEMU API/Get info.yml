@@ -1,0 +1,27 @@
+info:
+  name: Get info
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: http://localhost:8081/auth/me?email=khoa@test.com
+  params:
+    - name: email
+      value: khoa@test.com
+      type: query
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Khoa",
+        "email": "khoa@test.com",
+        "password": "123456"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,24 @@
+info:
+  name: Payment
+  type: http
+
+http:
+  method: POST
+  url: http://localhost:8081/payments
+  body:
+    type: json
+    data: |-
+      {
+        "orderId": 1,
+        "method": "CREDIT_CARD",
+        "transactionId": "txn_001",
+        "cardLast4": "4242",
+        "cardBrand": "Visa"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

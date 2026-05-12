@@ -1,0 +1,27 @@
+info:
+  name: Checkout
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8081/orders/checkout
+  body:
+    type: json
+    data: |-
+      {
+        "userId": 1,
+        "items": [
+          {
+            "productId": 1,
+            "quantity": 2
+          }
+        ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

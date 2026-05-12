@@ -1,0 +1,18 @@
+info:
+  name: Delete Orders
+  type: http
+  seq: 13
+
+http:
+  method: DELETE
+  url: http://localhost:8081/orders/4
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
