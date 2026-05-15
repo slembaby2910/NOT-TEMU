@@ -2,7 +2,8 @@ import "./app.css"
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "./cartholder.tsx";
 import { getUser } from "./auth";
-import { checkout } from "./api";
+import { checkout, fetchProducts } from "./api";
+
 
 export default function Shipping() {
     const { cartItems, setCartItems } = useCart();
@@ -11,17 +12,31 @@ export default function Shipping() {
     const { total } = location.state || { total: 0 };
 
     const handlePayNow = async () => {
-        const user = getUser();
+    const user = getUser();
 
-        if (!user) {
-            alert("You must be logged in to place an order.");
-            navigate("/login");
-            return;
-        }
+    if (!user) {
+        alert("Please login before checkout.");
+        navigate("/login");
+        return;
+    }
 
-        if (cartItems.length === 0) {
-            alert("Your cart is empty.");
-            return;
+    try {
+        const latestProducts = await fetchProducts();
+
+        for (const item of cartItems) {
+            const latest = latestProducts.find((p: any) => p.id === item.id);
+
+            if (!latest) {
+                alert(`${item.name} is no longer available.`);
+                return;
+            }
+
+            if (item.quantity > latest.stockQuantity) {
+                alert(
+                    `${item.name} only has ${latest.stockQuantity} left. Please update your cart.`
+                );
+                return;
+            }
         }
 
         const items = cartItems.map((i: any) => ({
@@ -29,15 +44,15 @@ export default function Shipping() {
             quantity: i.quantity,
         }));
 
-        try {
-            const order = await checkout(user.id, items);
-            setCartItems([]);
-            alert(`Order #${order.id} placed!`);
-            navigate("/catalog");
-        } catch (err: any) {
-            alert(err.error || "Checkout failed");
-        }
-    };
+        const order = await checkout(user.id, items);
+
+        setCartItems([]);
+        alert(`Order #${order.id} placed!`);
+        navigate("/catalog");
+    } catch (err: any) {
+        alert(err.error || "Checkout failed");
+    }
+};
 
     return (
         <div className="checkout">

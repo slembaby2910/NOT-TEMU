@@ -6,12 +6,15 @@ export default function Cart() {
     const { cartItems, setCartItems } = useCart();
 
     const handleQuantityChange = (id: number, newQuantity: number) => {
-        if (newQuantity < 1) return;
-
         setCartItems((prevItems: any[]) =>
-            prevItems.map((item) =>
-                item.id === id ? { ...item, quantity: newQuantity } : item
-            )
+            prevItems.map((item) => {
+                if (item.id !== id) return item;
+
+                const maxStock = Number(item.stockQuantity) || 1;
+                const safeQuantity = Math.max(1, Math.min(newQuantity, maxStock));
+
+                return { ...item, quantity: safeQuantity };
+            })
         );
     };
 
@@ -22,6 +25,10 @@ export default function Cart() {
     const total = cartItems.reduce(
         (sum: number, item: any) => sum + Number(item.price) * item.quantity,
         0
+    );
+
+    const hasStockProblem = cartItems.some(
+        (item: any) => item.quantity > Number(item.stockQuantity)
     );
 
     return (
@@ -53,6 +60,7 @@ export default function Cart() {
 
                             {cartItems.map((item: any) => {
                                 const lineTotal = Number(item.price) * item.quantity;
+                                const maxStock = Number(item.stockQuantity);
 
                                 return (
                                     <div key={item.id} className="cart-item">
@@ -63,6 +71,9 @@ export default function Cart() {
 
                                             <div className="cart-item-details">
                                                 <h3>{item.name}</h3>
+                                                <p className="cart-stock-note">
+                                                    Available: {maxStock}
+                                                </p>
 
                                                 <button
                                                     className="remove-btn"
@@ -81,6 +92,7 @@ export default function Cart() {
                                             <div className="quantity-selector">
                                                 <button
                                                     className="qty-btn"
+                                                    disabled={item.quantity <= 1}
                                                     onClick={() =>
                                                         handleQuantityChange(
                                                             item.id,
@@ -94,6 +106,7 @@ export default function Cart() {
                                                 <input
                                                     type="number"
                                                     min="1"
+                                                    max={maxStock}
                                                     value={item.quantity}
                                                     onChange={(e) =>
                                                         handleQuantityChange(
@@ -105,6 +118,7 @@ export default function Cart() {
 
                                                 <button
                                                     className="qty-btn"
+                                                    disabled={item.quantity >= maxStock}
                                                     onClick={() =>
                                                         handleQuantityChange(
                                                             item.id,
@@ -125,6 +139,12 @@ export default function Cart() {
                             })}
                         </div>
 
+                        {hasStockProblem && (
+                            <p className="cart-warning">
+                                Some items exceed available stock. Please update your cart.
+                            </p>
+                        )}
+
                         <div className="cart-summary">
                             <div className="summary-totals">
                                 <div className="subtotal-row">
@@ -139,8 +159,17 @@ export default function Cart() {
                                 </p>
                             </div>
 
-                            <Link to="/checkout" state={{ total }}>
-                                <button className="checkout-btn">Check-out</button>
+                            <Link
+                                to="/checkout"
+                                state={{ total }}
+                                className={hasStockProblem ? "disabled-link" : ""}
+                            >
+                                <button
+                                    className="checkout-btn"
+                                    disabled={hasStockProblem}
+                                >
+                                    Check-out
+                                </button>
                             </Link>
                         </div>
                     </>
