@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,21 +21,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         return http
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
-
-                // ENABLE cors instead of disabling it
-                .cors(cors -> {
-                })
-
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/products/**").permitAll()
+                        .requestMatchers("/orders/**").permitAll()
+                        .requestMatchers("/payments/**").permitAll()
+                        .requestMatchers("/inventory/**").permitAll()
                         .anyRequest().permitAll())
-
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
-
                 .build();
     }
 
@@ -45,19 +43,19 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "https://slembaby2910.github.io",
-                "https://not-temu.onrender.com"));
+                "http://localhost:3000",
+                "https://slembaby2910.github.io"));
 
         configuration.setAllowedMethods(List.of(
                 "GET",
                 "POST",
                 "PUT",
+                "PATCH",
                 "DELETE",
                 "OPTIONS"));
 
         configuration.setAllowedHeaders(List.of("*"));
-
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(false);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
