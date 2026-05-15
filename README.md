@@ -2,9 +2,9 @@
 
 ## Overview
 
-NOT-TEMU is a smart e-commerce system developed as a university group project. The system focuses on handling product catalogs, user authentication, order management, and payment simulation using a structured backend architecture.
+NOT-TEMU is a smart e-commerce system developed as a university group project. This system focuses on handling product catalogs, user authentication, order management, and payment simulation using a structured backend architecture.
 
-The project demonstrates a full-stack web application using React, Spring Boot, PostgreSQL, and cloud deployment services.
+Our project demonstrates a full-stack web application using React, Spring Boot, PostgreSQL, and cloud deployment services.
 
 ---
 
@@ -95,7 +95,7 @@ http://localhost:8081
 # Frontend Setup
 
 ## 1. Navigate to Frontend Folder
-
+depends on your directory but usually it will be at the ```frontend ``` folder
 
 ---
 
@@ -205,9 +205,11 @@ Supabase        | Database hosting
 Name             | Contribution
 ---------------- | -----------------------------------
 Do Nhat Anh Khoa | Backend development, deployment
-Huu Anh Tran     | Frontend development
+Huu Anh Tran     | Frontend development, coordinator
 Zirou Guo        | Project collaboration and planning
 
+Scrum leaders are rotated, with the scrum leaders in order:
+Huu Anh, Zirou, Khoa, Huu Anh
 ---
 
 # Notes
