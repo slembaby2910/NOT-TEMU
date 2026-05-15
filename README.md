@@ -2,9 +2,9 @@
 
 ## Overview
 
-NOT-TEMU is a smart e-commerce system developed as a university group project. The system focuses on handling product catalogs, user authentication, order management, and payment simulation using a structured backend architecture.
+NOT-TEMU is a smart e-commerce system developed as a university group project. This system focuses on handling product catalogs, user authentication, order management, and payment simulation using a structured backend architecture.
 
-The project demonstrates a full-stack web application using React, Spring Boot, PostgreSQL, and cloud deployment services.
+Our project demonstrates a full-stack web application using React, Spring Boot, PostgreSQL, and cloud deployment services.
 
 ---
 
