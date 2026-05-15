@@ -64,10 +64,6 @@ README.md
 
 ## 1. Navigate to Backend Folder
 
-```powershell
-cd backend
-```
-
 ---
 
 ## 2. Configure Environment Variables
@@ -100,9 +96,6 @@ http://localhost:8081
 
 ## 1. Navigate to Frontend Folder
 
-```powershell
-cd frontend
-```
 
 ---
 

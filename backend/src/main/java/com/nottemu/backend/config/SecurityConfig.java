@@ -45,6 +45,7 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:5173",
+                "https://slembaby2910.github.io",
                 "https://not-temu.onrender.com"));
 
         configuration.setAllowedMethods(List.of(
