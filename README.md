@@ -205,9 +205,11 @@ Supabase        | Database hosting
 Name             | Contribution
 ---------------- | -----------------------------------
 Do Nhat Anh Khoa | Backend development, deployment
-Huu Anh Tran     | Frontend development
+Huu Anh Tran     | Frontend development, coordinator
 Zirou Guo        | Project collaboration and planning
 
+Scrum leaders are rotated, with the scrum leaders in order:
+Huu Anh, Zirou, Khoa, Huu Anh
 ---
 
 # Notes
