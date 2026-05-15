@@ -4,7 +4,7 @@ import Controller from './controller.tsx';
 import { CartProvider } from './cartholder.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <BrowserRouter>
+    <BrowserRouter basename="/NOT-TEMU">
         <CartProvider>
             <Controller />
         </CartProvider>

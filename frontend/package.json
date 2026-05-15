@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://slembaby2910.github.io/NOT-TEMU",
+  "homepage": "https://oggy-huuanh.github.io/NOT-TEMU/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
