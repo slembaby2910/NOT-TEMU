@@ -194,6 +194,7 @@ Tool            | Purpose
 --------------- | ------------------
 GitHub          | Version control
 Discord         | Team communication
+Figma           | UI design
 Bruno / Postman | API testing
 VS Code         | Development
 Render          | Backend deployment
@@ -206,7 +207,7 @@ Name             | Contribution
 ---------------- | -----------------------------------
 Do Nhat Anh Khoa | Backend development, deployment
 Huu Anh Tran     | Frontend development, coordinator
-Zirou Guo        | Project collaboration and planning
+Zirou Guo        | UI design, Project collaboration and planning
 
 Scrum leaders are rotated, with the scrum leaders in order:
 Huu Anh, Zirou, Khoa, Huu Anh
