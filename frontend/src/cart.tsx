@@ -1,118 +1,88 @@
-import './app.css'
+import "./app.css";
 import { Link } from "react-router-dom";
-
+import { useState, useEffect } from "react";
+import { fetchProducts } from "./api";
 import { useCart } from "./cartholder.tsx";
 
+export default function Catalog() {
+    const [products, setProducts] = useState<any[]>([]);
+    const [search, setSearch] = useState("");
+    const { setCartItems } = useCart();
 
-export default function Cart() {
+    useEffect(() => {
+        fetchProducts().then(setProducts).catch(console.error);
+    }, []);
 
-    const { cartItems, setCartItems } = useCart();
-
-    const handleQuantityChange = (id: number, newQuantity: number) => {
-        if (newQuantity < 1) {
-            return;
-        }
-
-        setCartItems((prevItems: any[]) =>
-
-            prevItems.map(item =>
-                item.id === id ? {...item, quantity: newQuantity} : item
-            )
-        );
-    }
-
-    const remove = (id: number) =>
-        setCartItems((prev: any[]) => prev.filter(item => item.id !== id));
-
-    let summa = cartItems.reduce(
-        (summa: number, item: { price: number; quantity: number; }) =>  summa + item.price * item.quantity, 0
-
+    const visible = products.filter(p =>
+        p.name.toLowerCase().includes(search.toLowerCase())
     );
 
-    return(
-        <div className="cart">
-            <header className="cart-header">
+    const addToCart = (item: any) => {
+        setCartItems((prev: any[]) => {
+            const existing = prev.find(i => i.id === item.id);
+            if (existing) {
+                return prev.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i);
+            }
+            return [...prev, { ...item, quantity: 1 }];
+        });
+    };
 
-
-                <Link to="/catalog">
-                    <img src = {"icons/logo.jpg"} alt = "not-temu" />
-                </Link>
+    return (
+        <div className="catalog">
+            <header className="catalog-header">
+                <img src="icons/logo.jpg" alt="not-temu" />
+                <div className="search-bar-container">
+                    <span className="search-icon">🔍</span>
+                    <input type="text"
+                           className="search-input"
+                           placeholder="Search"
+                           value={search}
+                           onChange={(e) => setSearch(e.target.value)} />
+                </div>
+                <div className="header-icons">
+                    <img src="icons/man.jpg" alt="user" />
+                    <Link to="/cart" style={{ textDecoration: "none", color: "inherit" }}>
+                        <img src="icons/cart.jpg" alt="cart" />
+                    </Link>
+                </div>
             </header>
 
-            <main className="cart-main">
-                <h1 className="cart-title">Your cart items</h1>
-                <Link to="/catalog" className="back-link">
-                    Back to shopping
-                </Link>
-
-                <div className="cart-table">
-                    <div className="cart-table-header">
-
-                        <span className="col-product">Product</span>
-                        <span className="col-price">Price</span>
-                        <span className="col-quantity">Quantity</span>
-                        <span className="col-total">Total</span>
-
-                    </div>
-
-
+            <main className="catalog-main">
+                <div className="catalog-title">
+                    <h1>Products</h1>
+                    <p>Products that you might be interested in</p>
                 </div>
-                {cartItems.map((item : any) => (
-                    <div key={item.id} className="cart-item">
-                        <div className="col-product cart-item-info">
-                            <div className="cart-item-image">
-                                <img src={item.image} alt={item.name} />
-                            </div>
-                            <div className="cart-item-details">
-                                <h3>{item.name}</h3>
-                                <button
-                                    className="remove-btn"
-                                    onClick={() => remove(item.id)}
-                                >
-                                    Remove
-                                </button>
-                            </div>
-                        </div>
-                        <span className="col-price">€ {item.price.toFixed(2)}</span>
-                        <div className="col-quantity">
-                            <div className="quantity-selector">
-                                <button
-                                    className="qty-btn"
-                                    onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                                >
-                                    −
-                                </button>
-                                <input
-                                    type= "number"
-                                    min= "1"
-                                    value= {item.quantity}
-                                    onChange= {(e) =>
-                                        handleQuantityChange(item.id, parseInt(e.target.value) || 1)
-                                    }
+
+                <div className="product-grid">
+                    {visible.map((item) => (
+                        <div key={item.id} className="product-card">
+                            <div className="product-image-container">
+                                <img
+                                    src={item.imageUrl}
+                                    alt={item.name}
+                                    style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
+                                    onError={(e) => (e.currentTarget.style.display = "none")}
                                 />
-                                <button className= "qty-btn" onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>+</button>
+                            </div>
+                            <div className="product-info">
+                                <h3 className="product-name">{item.name}</h3>
+                                <div className="product-details">
+                                    <span className="stock_status">
+                                        {item.stockQuantity > 0 ? "in stock" : "out of stock"}
+                                    </span>
+                                    <span className="price">{item.price.toFixed(2)} €</span>
+                                    <button
+                                        onClick={() => addToCart(item)}
+                                        disabled={item.stockQuantity <= 0}
+                                    >
+                                        Add to cart
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <span className= "col-total">{
-                            summa = Number((item.price * item.quantity).toFixed(2)) } €
-                        </span>
-                    </div>
-                ))}
-
-                <div className= "cart-summary" >
-                    <div className= "summary-totals" >
-                        <div className= "subtotal-row">
-                            <span className= "subtotal-label">Total cost:</span>
-                            <span className= "subtotal-value"> {summa.toFixed(2)} €</span>
-                        </div>
-                        <p className= "tax-note" >Tax and shipping cost not included</p>
-                    </div>
-                    <Link to="/checkout" state= {{total : summa }}>
-                        <button className="checkout-btn">Check-out</button>
-                    </Link>
-
+                    ))}
                 </div>
             </main>
         </div>
-    )
+    );
 }
