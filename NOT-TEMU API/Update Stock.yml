@@ -5,12 +5,12 @@ info:
 
 http:
   method: PATCH
-  url: http://localhost:8081/inventory/4
+  url: https://not-temu.onrender.com/inventory/7
   body:
     type: json
     data: |-
       {
-        "quantity": 50
+        "quantity": 0
       }
 
 settings:
